@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL shortner</title>
+    <style>
+        body {
+            font-family: arial, tahoma, sans-serif;
+            font-size: 12px;
+            font-weight: normal;
+            direction: ltr;
+            background: #FDF7E4
+        }
+        
+        form input {
+            margin: 15px 0;
+            padding: 15px 10px;
+            width: 100%;
+            outline: none;
+            border: 1px solid #bbb;
+            border-radius: 20px;
+            display: inline-block;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            -webkit-transition: 0.2s ease all;
+            -moz-transition: 0.2s ease all;
+            -ms-transition: 0.2s ease all;
+            -o-transition: 0.2s ease all;
+            transition: 0.2s ease all;
+        }
+        
+        button[type=submit] {
+            padding: 15px 50px;
+            width: auto;
+            background: #6B240C;
+            border: none;
+            color: white;
+            cursor: pointer;
+            display: inline-block;
+            float: right;
+            clear: right;
+            -webkit-transition: 0.2s ease all;
+            -moz-transition: 0.2s ease all;
+            -ms-transition: 0.2s ease all;
+            -o-transition: 0.2s ease all;
+            transition: 0.2s ease all;
+            border: 1px solid #bbb;
+            border-radius: 15px;
+        }
+        
+        input[type="text"],
+        textarea {
+            background-color: #ECF4D6;
+        }
+        
+        button[type=submit]:hover {
+            opacity: 0.8;
+        }
+        
+        button[type="submit"]:active {
+            opacity: 0.4;
+        }
+        
+        #logo {
+            margin: 0 auto;
+            padding: 2%;
+            width: 100px;
+            font-family: 'Lily Script One', cursive;
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+            -webkit-transition: 0.2s ease all;
+            -moz-transition: 0.2s ease all;
+            -ms-transition: 0.2s ease all;
+            -o-transition: 0.2s ease all;
+            transition: 0.2s ease all;
+            color: cornflowerblue;
+        }
+        
+        label {
+            margin-left: 1.5%;
+            font-family: 'Lily Script One', cursive;
+            color: rgb(77, 76, 76);
+        }
+        
+        p {
+            margin-left: 2.5%;
+            font-family: 'Lily Script One', cursive;
+            color: gray;
+        }
+        
+        li {
+            padding-top: 10%;
+            color: lightgray;
+            list-style: decimal;
+        }
+        
+        li:hover {
+            color: cornflowerblue;
+        }
+        
+        #url {
+            color: #1abc9c;
+        }
+        
+        table {
+            font-family: arial, sans-serif;
+            width: 100%;
+            font-size: 14px;
+            border-collapse: collapse;
+            background-color: #FAEED1;
+            color: rgb(77, 76, 76);
+        }
+        
+        table thead th {
+            color: #ffffff;
+            background: #BBAB8C;
+            padding: 15px;
+            border: 1px solid #ebebec;
+            font-weight: 500;
+        }
+        
+        table tr {
+            background: #FAEED1;
+        }
+        
+        table tr td {
+            border: 1px solid #BBAB8C;
+            padding: 15px;
+        }
+        
+        @media only screen and (max-width: 640px) {
+            table thead {
+                display: none;
+            }
+            table tbody {
+                display: block;
+            }
+            table tbody tr td {
+                display: flex;
+                align-items: center;
+                padding: 0;
+            }
+            table tbody tr {
+                margin-bottom: 20px;
+                display: block;
+                border: 1px solid #004976;
+                background: #f9f9f9;
+                overflow: hidden;
+            }
+            table tbody td::before {
+                content: attr(data-label);
+                font-weight: bold;
+                width: 30%;
+                display: flex;
+                background: #004976;
+                color: #fff;
+                padding: 15px;
+                margin-inline-end: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1 id="logo">URL shortner</h1>
+    <div>
+        <% if (locals.id) { %>
+            <p>URL generated</p>
+            <p>shortId : <label id="url">
+                    <%-id %>
+                </label></p>
+            <p><b>(Use as : </b>localhost:8001/redirecturl/shortID)</p>
+            <% } %>
+                <form method="POST" action="/url/">
+                    <label>Enter your original URL</label>
+                    <input type="text" name="url" placeholder="https://example.com">
+                    <button type="submit">Generate</button>
+                </form>
+                <br>
+                <br>
+                <h3>Created URLs</h3>
+                <% if (locals.urls) { %>
+                    <table>
+                        <thead>
+                            <th>Sr. No</th>
+                            <th>ShortID</th>
+                            <th>RedirectURL</th>
+                            <th>Visits</th>
+                        </thead>
+                        <% urls.forEach((url,index) => { %>
+                            <tr>
+                                <td>
+                                    <%= index+1 %>
+                                </td>
+                                <td>
+                                    <%= url.shortId %>
+                                </td>
+                                <td>
+                                    <%= url.redirectURL %>
+                                </td>
+                                <td>
+                                    <%= url.visitHistory.length %>
+                                </td>
+                            </tr>
+
+
+                            <% }) %>
+                    </table>
+                    <% } %>
+    </div>
+</body>
+
+</html>
